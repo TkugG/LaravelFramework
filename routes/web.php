@@ -1,14 +1,16 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\RepairController;
+use App\Http\Controllers\BookingController;
 
-// หน้าแรกของเว็บ ให้เปิดหน้าฟอร์มแจ้งซ่อมเลย
-Route::get('/', [RepairController::class, 'create']);
-Route::get('/repair', [RepairController::class, 'create']);
+// หน้าแรก และ หน้าฟอร์มจองคิวซ่อม/ล้างแอร์
+Route::get('/', [BookingController::class, 'create']);
+Route::get('/booking', [BookingController::class, 'create']);
+Route::post('/booking', [BookingController::class, 'store']);
 
-// รับข้อมูลจากฟอร์มเพื่อบันทึกลงฐานข้อมูล
-Route::post('/repairs', [RepairController::class, 'store']);
+// หน้าค้นหาและติดตามสถานะคิวงานด้วยเบอร์โทรศัพท์
+Route::get('/track', [BookingController::class, 'track']);
 
-// หน้าค้นหาและติดตามสถานะงานซ่อม (สำหรับผู้ใช้งาน)
-Route::get('/track', [RepairController::class, 'track']);
+// ฝั่งช่าง/ร้าน (Admin Dashboard & เปลี่ยนสถานะงาน)
+Route::get('/admin', [BookingController::class, 'admin']);
+Route::post('/admin/bookings/{id}/status', [BookingController::class, 'updateStatus']);
